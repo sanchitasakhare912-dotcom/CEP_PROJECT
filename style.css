@@ -111,9 +111,9 @@ body {
   color: white;
 }
 
-/* Rest – GREEN (rgb(148,199,169)) */
+/* Rest – Lavender */
 .task-rest {
-  background: rgb(148, 199, 169);
+  background: linear-gradient(135deg, #c9c7e8, #bdb8e0);
   color: white;
 }
 
