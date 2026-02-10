@@ -112,11 +112,14 @@ body {
 }
 
 /* Rest – Lavender */
-.task-rest {
+.task-water {
   background: linear-gradient(135deg, #c9c7e8, #bdb8e0);
   color: white;
 }
-
+.task-rest {
+  background: linear-gradient(135deg, #f9afc9, #f9afc9);
+  color: white;
+}
 /* LEFT PART */
 .task-left {
   display: flex;
