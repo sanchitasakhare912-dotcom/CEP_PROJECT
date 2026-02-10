@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dementia Care</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div>
+      <h2 id="greeting">Good Morning</h2>
+      <p id="reassure">You are safe. Everything is okay.</p>
+    </div>
+
+    <!-- Caregiver access -->
+    <a href="caregiver.html" class="caregiver-icon">⚙️</a>
+  </div>
+
+  <!-- DATE & TIME -->
+  <div class="time-card">
+    <p id="dayDate"></p>
+    <h1 id="time"></h1>
+  </div>
+
+  <!-- LANGUAGE -->
+  <div class="language-box">
+    🌐
+    <div class="lang-switch">
+      <button class="lang-btn active" onclick="setLang('en', this)">English</button>
+      <button class="lang-btn" onclick="setLang('hi', this)">हिंदी</button>
+      <button class="lang-btn" onclick="setLang('mr', this)">मराठी</button>
+    </div>
+  </div>
+
+  <!-- TASKS -->
+  <div class="task-list">
+
+    <!-- MEDICINE -->
+    <div class="task-card task-medicine">
+      <span class="task-left">
+        <span class="emoji">💊</span>
+        <span class="task-info">
+          <span data-key="medicine">Medicine</span>
+          <strong id="medName">---</strong>
+          <small id="medTime">⏰ --:--</small>
+        </span>
+      </span>
+      <button class="medicine-btn" onclick="markDone(this, 'medicine')">DONE</button>
+    </div>
+
+    <!-- MEAL -->
+    <div class="task-card task-meal">
+      <span class="task-left">
+        <span class="emoji">🍽️</span>
+        <span data-key="meal">Meal</span>
+      </span>
+      <button class="meal-btn" onclick="markDone(this, 'meal')">DONE</button>
+    </div>
+
+    <!-- WATER -->
+    <div class="task-card task-rest">
+      <span class="task-left">
+        <span class="emoji">💧</span>
+        <span data-key="water">Drink Water</span>
+      </span>
+      <button class="water-btn" onclick="markDone(this, 'water')">DONE</button>
+    </div>
+
+    <!-- REST -->
+    <div class="task-card">
+      <span class="task-left">
+        <span class="emoji">😴</span>
+        <span data-key="rest">Rest</span>
+      </span>
+      <button class="rest-btn" onclick="markDone(this, 'rest')">DONE</button>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM ACTIONS -->
+  <div class="bottom-actions">
+    <button class="confused" onclick="confusedHelp()">I Am Confused</button>
+    <button class="people" onclick="goPeople()">My People</button>
+  </div>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,187 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background: linear-gradient(180deg, #cfe9f5, #fef6e4);
+}
+
+/* MAIN APP */
+.app {
+  max-width: 430px;
+  margin: auto;
+  padding: 10px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* TOP BAR */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.top-bar h2 {
+  margin: 0;
+}
+
+#reassure {
+  font-size: 14px;
+  color: #0a6d78;
+}
+
+.caregiver-icon {
+  font-size: 20px;
+  text-decoration: none;
+  color: #555;
+}
+
+/* TIME CARD */
+.time-card {
+  background: white;
+  border-radius: 14px;
+  padding: 16px;
+  margin: 16px 0;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+/* LANGUAGE */
+.language-box {
+  margin-bottom: 12px;
+}
+
+.lang-switch {
+  display: inline-flex;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 4px;
+  gap: 4px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.lang-btn {
+  border: none;
+  background: transparent;
+  padding: 6px 14px;
+  font-size: 14px;
+  border-radius: 16px;
+  cursor: pointer;
+  color: #444;
+}
+
+.lang-btn.active {
+  background: #f97316;
+  color: white;
+}
+
+/* TASK LIST */
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* TASK CARD (BASE) */
+.task-card {
+  border-radius: 18px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+  font-size: 16px;
+}
+
+/* TASK COLOR VARIANTS */
+
+/* Medicine – Blue */
+.task-medicine {
+  background: linear-gradient(135deg, #6fbecb, #8fd3dd);
+  color: white;
+}
+
+/* Meal & Water – Sand */
+.task-meal {
+  background: linear-gradient(135deg, #e2d3a3, #d9c78c);
+  color: white;
+}
+
+/* Rest – Lavender */
+.task-rest {
+  background: linear-gradient(135deg, #c9c7e8, #bdb8e0);
+  color: white;
+}
+
+/* LEFT PART */
+.task-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.task-left .emoji {
+  font-size: 20px;
+  background: rgba(255,255,255,0.25);
+  padding: 8px;
+  border-radius: 12px;
+}
+
+/* TEXT INFO */
+.task-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.task-info small {
+  color: rgba(255,255,255,0.85);
+  font-size: 13px;
+}
+
+/* DONE BUTTON (WHITE PILL) */
+.task-card button {
+  background: white;
+  color: #ff6a00;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* DONE STATE */
+.task-card button.done {
+  background: #2ecc71;
+  color: white;
+}
+
+/* BOTTOM ACTIONS */
+.bottom-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.confused,
+.people {
+  flex: 1;
+  border: none;
+  border-radius: 14px;
+  padding: 12px;
+  font-size: 15px;
+  color: white;
+}
+
+/* Confused – Soft Green */
+.confused {
+  background: #7cc7a2;
+}
+
+/* My People – Teal */
+.people {
+  background: #3fc1a3;
+}
