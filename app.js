@@ -1,4 +1,4 @@
-/* ================= TIME, DATE, GREETING ================= */
+
 
 function updateTime() {
   const now = new Date();
@@ -25,6 +25,7 @@ function updateTime() {
 setInterval(updateTime, 1000);
 updateTime();
 
+
 /* ================= LANGUAGE ================= */
 
 const translations = {
@@ -42,23 +43,174 @@ function setLang(lang, btn) {
   });
 }
 
-/* ================= DONE → ✔ ================= */
 
-function markDone(btn, taskType) {
-  btn.innerText = "✔";
-  btn.classList.add("done");
+/* ================= MEDICINE MULTI-SLOT LOGIC ================= */
 
-  const now = Date.now();
+/* Get current active medicine based on time */
+function getCurrentMedicine() {
+  const meds = JSON.parse(localStorage.getItem("medicines")) || [];
+  const now = new Date();
+  const currentTime = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
-  if (taskType === "water") {
-    localStorage.setItem("waterLastDone", now);
-  } else {
-    const taskTime = localStorage.getItem(taskType + "Time");
-    localStorage.setItem(taskType + "LastDone", taskTime);
+  let currentMed = null;
+
+  meds.forEach(med => {
+    if (med.time <= currentTime) {
+      currentMed = med;
+    }
+  });
+
+  return currentMed;
+}
+function getCurrentMeal() {
+  const meals = JSON.parse(localStorage.getItem("meals")) || [];
+  const now = new Date();
+  const currentTime = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+  let currentMeal = null;
+
+  meals.forEach(meal => {
+    if (meal.time <= currentTime) {
+      currentMeal = meal;
+    }
+  });
+
+  return currentMeal;
+}
+function getCurrentRest() {
+  const rests = JSON.parse(localStorage.getItem("rests")) || [];
+  const now = new Date();
+  const currentTime = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+  let currentRest = null;
+
+  rests.forEach(rest => {
+    if (rest.time <= currentTime) {
+      currentRest = rest;
+    }
+  });
+
+  return currentRest;
+}
+
+/* ================= DAILY RESET ================= */
+
+function resetMedicinesIfNewDay() {
+  const today = new Date().toISOString().split("T")[0];
+  const lastReset = localStorage.getItem("lastMedicineReset");
+
+  if (lastReset !== today) {
+    let meds = JSON.parse(localStorage.getItem("medicines")) || [];
+
+    meds = meds.map(med => {
+      med.done = false;
+      return med;
+    });
+
+    localStorage.setItem("medicines", JSON.stringify(meds));
+    localStorage.setItem("lastMedicineReset", today);
   }
 }
 
-/* ================= RESET LOGIC ================= */
+
+/* Load and display correct medicine */
+function loadMedicineDetails() {
+  const med = getCurrentMedicine();
+  const btn = document.querySelector(".medicine-btn");
+
+  if (!med) {
+    document.getElementById("medName").innerText = "No medicine now";
+    document.getElementById("medTime").innerText = "⏰ --:--";
+    if (btn) {
+      btn.innerText = "DONE";
+      btn.classList.remove("done");
+    }
+    return;
+  }
+
+  document.getElementById("medName").innerText = med.name;
+  document.getElementById("medTime").innerText = "⏰ " + med.time;
+
+  if (btn) {
+    if (med.done) {
+      btn.innerText = "✔";
+      btn.classList.add("done");
+    } else {
+      btn.innerText = "DONE";
+      btn.classList.remove("done");
+    }
+  }
+}
+function markDone(btn, taskType) {
+
+  if (taskType === "water") {
+    btn.innerText = "✔";
+    btn.classList.add("done");
+    localStorage.setItem("waterLastDone", Date.now());
+    return;
+  }
+
+  if (taskType === "medicine") {
+    let meds = JSON.parse(localStorage.getItem("medicines")) || [];
+    const current = getCurrentMedicine();
+
+    meds = meds.map(med => {
+      if (med.time === current?.time) {
+        med.done = true;
+      }
+      return med;
+    });
+
+    localStorage.setItem("medicines", JSON.stringify(meds));
+
+    btn.innerText = "✔";
+    btn.classList.add("done");
+    return;
+  }
+
+  if (taskType === "meal") {
+    let meals = JSON.parse(localStorage.getItem("meals")) || [];
+    const current = getCurrentMeal();
+
+    meals = meals.map(meal => {
+      if (meal.time === current?.time) {
+        meal.done = true;
+      }
+      return meal;
+    });
+
+    localStorage.setItem("meals", JSON.stringify(meals));
+
+    btn.innerText = "✔";
+    btn.classList.add("done");
+    return;
+  }
+
+  if (taskType === "rest") {
+    let rests = JSON.parse(localStorage.getItem("rests")) || [];
+    const current = getCurrentRest();
+
+    rests = rests.map(rest => {
+      if (rest.time === current?.time) {
+        rest.done = true;
+      }
+      return rest;
+    });
+
+    localStorage.setItem("rests", JSON.stringify(rests));
+
+    btn.innerText = "✔";
+    btn.classList.add("done");
+    return;
+  }
+  btn.innerText = "✔";
+  btn.classList.add("done");
+  const taskTime = localStorage.getItem(taskType + "Time");
+  localStorage.setItem(taskType + "LastDone", taskTime);
+
+}
+
+/* ================= RESET LOGIC (MEAL & REST) ================= */
 
 function checkScheduledTask(taskType) {
   const taskTime = localStorage.getItem(taskType + "Time");
@@ -67,36 +219,41 @@ function checkScheduledTask(taskType) {
 
   if (!taskTime || !btn) return;
 
-  if (taskTime !== lastDone) {
+  if (taskTime === lastDone) {
+    btn.innerText = "✔";
+    btn.classList.add("done");
+  } else {
     btn.innerText = "DONE";
     btn.classList.remove("done");
   }
 }
+
+
+/* ================= WATER RESET ================= */
 
 function checkWaterTask() {
   const lastDone = localStorage.getItem("waterLastDone");
   const btn = document.querySelector(".water-btn");
 
-  if (!lastDone || !btn) return;
+  if (!btn) return;
 
-  if (Date.now() - lastDone >= 3600000) {
+  if (!lastDone) {
+    btn.innerText = "DONE";
+    btn.classList.remove("done");
+    return;
+  }
+
+  const oneHour = 3600000;
+
+  if (Date.now() - lastDone < oneHour) {
+    btn.innerText = "✔";
+    btn.classList.add("done");
+  } else {
     btn.innerText = "DONE";
     btn.classList.remove("done");
   }
 }
 
-/* ================= MEDICINE DETAILS ================= */
-
-function loadMedicineDetails() {
-  const name = localStorage.getItem("medicineName");
-  const time = localStorage.getItem("medicineTime");
-
-  document.getElementById("medName").innerText =
-    name && name.trim() ? name : "Medicine not set";
-
-  document.getElementById("medTime").innerText =
-    time && time.trim() ? "⏰ " + time : "⏰ --:--";
-}
 
 /* ================= SUPPORT ================= */
 
@@ -108,21 +265,25 @@ function goPeople() {
   window.location.href = "people.html";
 }
 
+
 /* ================= AUTO CHECKS ================= */
 
 setInterval(() => {
-  checkScheduledTask("medicine");
-  checkScheduledTask("meal");
-  checkScheduledTask("rest");
+  loadMealDetails();
+  loadRestDetails();
   checkWaterTask();
+  loadMedicineDetails();
 }, 60000);
+
 
 /* ================= ON LOAD ================= */
 
 window.onload = function () {
+  resetMedicinesIfNewDay();   // 👈 Add this line
+
   loadMedicineDetails();
-  checkScheduledTask("medicine");
-  checkScheduledTask("meal");
-  checkScheduledTask("rest");
+  loadMealDetails();
+  loadRestDetails();
   checkWaterTask();
 };
+
